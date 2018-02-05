@@ -17,7 +17,7 @@
 
 {%  embed "_includes/menu.html.twig" %}
     {% block menu_title %}
-        Parcequ'il fait trop {{ parent() }} pour travailler
+        Parcequ'il fait trop {{ parent() }} pour travailler - {% if app.environment != 'prod' %}Surtout les {{ app.environment }}s{% endif %}
     {% endblock %}
 {% endembed %}
 
