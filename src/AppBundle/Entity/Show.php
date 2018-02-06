@@ -85,17 +85,17 @@ class Show{
     /**
      * @return mixed
      */
-    public function getReleaseDate()
+    public function getReleasedDate()
     {
-        return $this->releaseDate;
+        return $this->releasedDate;
     }
 
     /**
-     * @param mixed $releaseDate
+     * @param mixed $releasedDate
      */
-    public function setReleaseDate($releaseDate)
+    public function setReleasedDate($releasedDate)
     {
-        $this->releaseDate = $releaseDate;
+        $this->releasedDate = $releasedDate;
     }
 
     /**
@@ -153,12 +153,16 @@ class Show{
     /**
      * @ORM\Column(type="date")
      */
-    private $releaseDate;
+    private $releasedDate;
 
     /**
      * @ORM\Column(type="string")
      */
     private $mainPicture;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="category_id",referencedColumnName="id")
+     */
     private $category;
 }

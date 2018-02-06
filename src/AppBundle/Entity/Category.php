@@ -30,7 +30,7 @@ class Category
     private $name;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
