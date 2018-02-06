@@ -9,6 +9,8 @@ use AppBundle\Entity\Category;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use AppBundle\File\FileUploader;
 
 /**
  * @Route(name="show_")
@@ -18,7 +20,7 @@ class ShowController extends Controller
     /**
      * @Route("/create",name="create")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, FileUploader $fileUploader)
     {
         $show = new Show();
         $form = $this->createForm(ShowType::class, $show);
@@ -27,10 +29,7 @@ class ShowController extends Controller
 
         if ($form->isValid()){
 
-            $generatedFileName = time().'_'.$show->getCategory()->getName().$show->getMainPicture()->guessClientExtension();
-            $path = $this->getParameter('kernel.project_dir').'/web'.$this->getParameter('upload_directory_file');
-
-            $show->getMainPicture()->move($path,$generatedFileName);
+            $generatedFileName = $fileUploader->upload($show->getTmpPicture(), $show->getCategory()->getName());
 
             $show->setMainPicture($generatedFileName);
 
@@ -39,17 +38,7 @@ class ShowController extends Controller
             $em->persist($show);
             $em->flush();
 
-
-            // upload file
-
-
-
-            // Save
-
             $this->addFlash('success','You successfully added a new show !');
-
-
-
 
             return $this->redirectToRoute('show_list');
         }
@@ -64,13 +53,57 @@ class ShowController extends Controller
      */
     public function listAction()
     {
-        return $this->render('show/list.html.twig');
+
+        $em = $this->getDoctrine()->getManager();
+        $shows = $em->getRepository("AppBundle:Show")->findAll();
+        return $this->render(
+            'show/list.html.twig',
+            [
+                'shows' => $shows
+            ]
+        );
     }
 
     public function categoriesAction(){
-        return $this->render('_includes/categories.html.twig',[
-            'categories' => ['Web Design','HTML','Freebies','Javascript','CSS','Tutorials']]
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository("AppBundle:Category")->findAll();
+        return $this->render(
+            "_includes/categories.html.twig",
+            [
+                'categories' => $categories
+            ]
         );
     }
+
+    /**
+     * @Route @Route("/update/{id}", name="update")
+     */
+    public function updateAction(Show $show, Request $request, FileUploader $fileUploader){
+        $showForm = $this->createForm(ShowType::class, $show, ['validation_groups'=>['update']]);
+
+        $showForm->handleRequest($request);
+
+        if ($showForm->isValid()){
+
+            if ($show->getTmpPicture()!=null){
+                $generatedFileName = $fileUploader->upload($show->getTmpPicture(), $show->getCategory()->getName());
+
+                $show->setMainPicture($generatedFileName);
+            }
+
+            //dump($show); die;
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($show);
+            $em->flush();
+
+
+            $this->addFlash('success','You successfully updated the show !');
+
+            return $this->redirectToRoute('show_list');
+        }
+
+        return $this->render('show/create.html.twig',['showForm'=>$showForm->createView()]);
+    }
+
 
 }

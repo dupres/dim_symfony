@@ -22,7 +22,7 @@ class Show{
 
     /**
      * @return mixed
-     * @Assert\NotBlank(message="Please provide a name for the show.")
+     * @Assert\NotBlank(message="Please provide a name for the show.", groups={"create"})
      */
     public function getName()
     {
@@ -39,7 +39,7 @@ class Show{
 
     /**
      * @return mixed
-     * @Assert\NotBlank(message="Please provide a name for the show.")
+     * @Assert\NotBlank(message="Please provide a name for the show.", groups={"create"})
      */
     public function getAbstract()
     {
@@ -56,7 +56,7 @@ class Show{
 
     /**
      * @return mixed
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"create"})
      */
     public function getCountry()
     {
@@ -73,7 +73,7 @@ class Show{
 
     /**
      * @return mixed
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"create"})
      */
     public function getAuthor()
     {
@@ -90,7 +90,7 @@ class Show{
 
     /**
      * @return mixed
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"create"})
      */
     public function getReleasedDate()
     {
@@ -107,10 +107,28 @@ class Show{
 
     /**
      * @return mixed
+     * @Assert\NotBlank(groups={"create"})
      */
     public function getMainPicture()
     {
         return $this->mainPicture;
+    }
+
+    /**
+     * @return mixed
+     * @Assert\NotBlank(groups={"create"})
+     */
+    public function getTmpPicture()
+    {
+        return $this->tmpPicture;
+    }
+
+    /**
+     * @param mixed $tmpPicture
+     */
+    public function setTmpPicture($tmpPicture)
+    {
+        $this->tmpPicture = $tmpPicture;
     }
 
     /**
@@ -123,7 +141,6 @@ class Show{
 
     /**
      * @return mixed
-     * @Assert\NotBlank
      */
     public function getCategory()
     {
@@ -165,13 +182,16 @@ class Show{
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Image(minHeight=300, minWidth=750)
      */
     private $mainPicture;
 
     /**
      * @ORM\ManyToOne(targetEntity="Category")
      * @ORM\JoinColumn(name="category_id",referencedColumnName="id")
-     * @Assert\Image(minHeight=300, minWidth=750)
+     *
      */
     private $category;
+
+    private $tmpPicture;
 }
