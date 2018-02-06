@@ -9,11 +9,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Category
  * @ORM\Entity()
- * @package AppBundle\Entity
+ * @UniqueEntity("name", message="{{ value }} is already used")
  */
 class Category
 {
@@ -25,7 +26,7 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string",unique=true)
      */
     private $name;
 

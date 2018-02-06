@@ -3,11 +3,13 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Category
  * @package AppBundle\Entity
  * @ORM\Entity()
+ * @ORM\Table(name="s_show")
  */
 class Show{
 
@@ -20,6 +22,7 @@ class Show{
 
     /**
      * @return mixed
+     * @Assert\NotBlank(message="Please provide a name for the show.")
      */
     public function getName()
     {
@@ -36,6 +39,7 @@ class Show{
 
     /**
      * @return mixed
+     * @Assert\NotBlank(message="Please provide a name for the show.")
      */
     public function getAbstract()
     {
@@ -52,6 +56,7 @@ class Show{
 
     /**
      * @return mixed
+     * @Assert\NotBlank
      */
     public function getCountry()
     {
@@ -68,6 +73,7 @@ class Show{
 
     /**
      * @return mixed
+     * @Assert\NotBlank
      */
     public function getAuthor()
     {
@@ -84,6 +90,7 @@ class Show{
 
     /**
      * @return mixed
+     * @Assert\NotBlank
      */
     public function getReleasedDate()
     {
@@ -116,6 +123,7 @@ class Show{
 
     /**
      * @return mixed
+     * @Assert\NotBlank
      */
     public function getCategory()
     {
@@ -163,6 +171,7 @@ class Show{
     /**
      * @ORM\ManyToOne(targetEntity="Category")
      * @ORM\JoinColumn(name="category_id",referencedColumnName="id")
+     * @Assert\Image(minHeight=300, minWidth=750)
      */
     private $category;
 }
