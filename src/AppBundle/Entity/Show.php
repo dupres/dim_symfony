@@ -20,6 +20,14 @@ class Show{
      */
     private $id;
 
+    public function getId(){
+        return $this->id;
+    }
+
+    public function setId($id){
+        $this->id = $id;
+    }
+
     /**
      * @return mixed
      * @Assert\NotBlank(message="Please provide a name for the show.", groups={"create"})

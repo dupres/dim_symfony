@@ -12,12 +12,14 @@
     <link href="{{ asset('css/blog-home.css')}}" rel="stylesheet">
 </head>
 <body>
-
+{% if search is not defined %}
+    {% set search = "" %}
+{% endif %}
 {# {%  include "_includes/menu.html.twig" %} #}
 
 {%  embed "_includes/menu.html.twig" %}
     {% block menu_title %}
-        Parcequ'il fait trop {{ parent() }} pour travailler - {% if app.environment != 'prod' %}Surtout les {{ app.environment }}s{% endif %}
+        Parcequ'il fait trop {{ parent() }} pour travailler - {% if app.environment != 'prod' %}Surtout pour les {{ app.environment }}s{% endif %}
     {% endblock %}
 {% endembed %}
 
@@ -47,41 +49,34 @@
         <div class="col-md-4">
             <!-- Search Widget -->
             <div class="card my-4">
-                <h5 class="card-header">Search</h5>
+                <h5 class="card-header">Chercher une série</h5>
                 <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button">Go!</button>
-                </span>
-                    </div>
+                    <form action="/search" method="post">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" value="{{ search }}" placeholder="Rechercher...">
+                            <span class="input-group-btn">
+                                <input type="submit" class="btn btn-secondary" value="Go!">
+                            </span>
+                        </div>
+                    </form>
                 </div>
             </div>
 
 
             {{ render(controller("AppBundle\\Controller\\ShowController::categoriesAction")) }}
 
-            <!-- Side Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Side Widget</h5>
-                <div class="card-body">
-                    You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-                </div>
-            </div>
         </div>
     </div>
     <!-- /.row -->
 </div>
-<!-- /.container -->
+<!-- Bootstrap core JavaScript -->
 <!-- Footer -->
-<footer class="py-5 bg-dark">
+<footer class="py-5 bg-dark"">
     <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
     </div>
-    <!-- /.container -->
 </footer>
-<!-- Bootstrap core JavaScript -->
+</body>
 <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-</body>
 </html>

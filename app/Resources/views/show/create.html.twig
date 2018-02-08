@@ -1,28 +1,37 @@
 {% extends "show/base.html.twig" %}
 
-{%  block pageHeading %}
-    <h1>Create a show</h1>
-{%  endblock %}
+{% if app.request.attributes.get('_route') == 'show_update' %}
+    {% set action = "Update" %}
+{% endif %}
+{% if app.request.attributes.get('_route') == 'show_create' %}
+    {% set action = "Create" %}
+{% endif %}
+
+{% block pageHeading %}
+    {{ action }} a Show !
+{% endblock pageHeading %}
 
 {% block content %}
 
-    {# {{ form(showForm) }} #}
-
+    <!-- Add form -->
+    <div>
     {{ form_start(showForm, {"attr":{"novalidate":"novalidate"}}) }}
 
-        {#{{ form_widget(showForm) }} #}
-
-        {#{{ form_row(showForm.name) }} #}
-
-        {{ form_label(showForm.name) }}
-        {{ form_widget(showForm.name) }}
-        {{ form_errors(showForm.name) }}
-
         {{ form_rest(showForm) }}
-
-        <input type="submit" value="Create"/>
-
-
+        {% if app.request.attributes.get('_route') == 'show_update' %}
+            <div class="form-group">
+                <label class="form-control-label">Current picture</label>
+                <div><img class="card-img-top" src="/upload/{{ show.getMainPicture() }}" alt="Card image cap" style="max-width: 200px;"></div>
+            </div>
+        {% endif %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5">&nbsp;</div>
+                <div class="col-sm-7">
+                    <input type="submit" class="btn btn-secondary" value="{{ action }}">
+                </div>
+            </div>
+        </div>
     {{ form_end(showForm) }}
-
-{% endblock %}
+    </div>
+{% endblock content %}
