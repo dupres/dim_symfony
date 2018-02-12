@@ -111,7 +111,7 @@
             if(r<=125)
                 ri = true;
         }
-    },50);
+    },25);
     setInterval(function(){
         if (gi){
             g++;
@@ -122,7 +122,7 @@
             if(g<=125)
                 gi = true;
         }
-    },49);
+    },24);
     setInterval(function(){
         if (bi){
             b++;
@@ -133,10 +133,98 @@
             if(b<=125)
                 bi = true;
         }
-    },48);
+    },23);
     setInterval(function(){
         $("body").css("background-color","rgb("+r+","+g+","+b+")");
-    },50);
+        console.log(r,g,b);
+    },25);
 
 
 </script>
+
+<!--
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+google.load("language", "1");
+
+function Langue() //Fonction pour trouver la langue
+	{
+	var texteatraduire = document.getElementById('texteatraduire').value;
+	var languetraduite = document.getElementById('languetraduite').value;
+	var languedorigine = document.getElementById('languedorigine').value;
+
+	var text = texteatraduire;
+	google.language.detect(text, function(result) //API Google
+	{
+		if (!result.error)
+			{
+			var language = 'unknown';
+			for (l in google.language.Languages)
+				{
+				if (google.language.Languages[l] == result.language)
+					{
+					language = l;
+					break;
+					}
+				}
+				document.getElementById('informations').innerHTML = "This text is in "+l; //Ecriture de la langue
+			}
+		});
+	}
+
+function Traduction()
+	{
+	var texteatraduire = document.getElementById('texteatraduire').value;
+	var languetraduite = document.getElementById('languetraduite').value;
+	var languedorigine = document.getElementById('languedorigine').value;
+
+	if (languedorigine == languetraduite) //On vérifie si les deux langues ne sont pas identiques
+		{
+		document.getElementById('informations').innerHTML = "La langue du texte et celle dans laquelle il doit être traduit sont identiques.";
+		}
+	else
+		{
+		google.language.translate(texteatraduire, languedorigine, languetraduite,
+		function(result)
+			{
+			if (!result.error)
+				{
+				var container = document.getElementById("textetraduit");
+				container.innerHTML = result.translation;
+				document.getElementById('informations').innerHTML = "Le texte à été traduit.";
+				}
+			});
+		}
+	}
+
+</script>
+
+</head>
+
+<body>
+
+<select id="languedorigine">
+<option value="fr">Francais</option>
+<option value="en">English</option>
+<option value="de">German</option>
+<option value="es">Español</option>
+</select>
+
+<select id="languetraduite">
+    <option value="fr">Francais</option>
+    <option value="en">English</option>
+    <option value="de">German</option>
+    <option value="es">Español</option>
+</select>
+
+<div id="informations"></div>
+<textarea id="texteatraduire"></textarea>
+<div id="textetraduit"></div>
+
+<a href="javascript:Traduction()">Traduire</a> <a href="javascript:Langue()">Touver la langue</a>
+
+</body>
+
+</html>
+-->

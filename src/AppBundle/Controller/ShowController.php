@@ -8,6 +8,7 @@ use AppBundle\Type\ShowType;
 use AppBundle\Type\CategoryType;
 use AppBundle\File\FileUploader;
 use AppBundle\Search\ShowSearch;
+use AppBundle\ShowFinder\ShowFinder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -53,11 +54,23 @@ class ShowController extends Controller
     //    return $this->render('show/create.html.twig');
     }
 
+
     /**
      * @Route("/",name="list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request, ShowFinder $showFinder)
     {
+        $showRepository = $this->getDoctrine()->getRepository('AppBundle:Show');
+        $session = $request->getSession();
+        if ($session->has('query_search_shows')){
+            $shows = $showFinder->searchByName($session->get('query_search_shows'));
+            $session->remove('query_search_shows');
+        }else{
+            $shows = $showRepository->findAll();
+        }
+
+
+        /*
         $showRepository = $this->getDoctrine()->getRepository('AppBundle:Show');
         $session = $request->getSession();
         if ($session->has('query_search_shows')){
@@ -74,7 +87,7 @@ class ShowController extends Controller
             //        'shows' => $shows
             //    ]
             //);
-        }
+        }*/
         return $this->render('show/list.html.twig',['shows'=>$shows]);
     }
 

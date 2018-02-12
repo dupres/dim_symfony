@@ -52,14 +52,14 @@ ou
 php composer.phar require doctrine/doctrine-migrations-bundle "^1.0"
 
 
+appDevDebugProjectContainer contient les infos des services
+
+
+composer require csa/guzzle-bundle
+
+bin/console debug:container:client
 
 
 
-
-
-
-
-
-
-
+Parametres: dans parameters.yml.dist pour commit
 

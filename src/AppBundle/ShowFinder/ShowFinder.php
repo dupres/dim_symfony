@@ -3,6 +3,7 @@
 namespace AppBundle\ShowFinder;
 
 
+
 class ShowFinder
 {
     private $finders;
@@ -13,6 +14,10 @@ class ShowFinder
 
 
     public function searchByName($query){
+        foreach($this->finders as $finder){
+            $tmp[$finder->getName()] = $finder->findByName($query);
+        }
 
+        return $tmp;
     }
 }
