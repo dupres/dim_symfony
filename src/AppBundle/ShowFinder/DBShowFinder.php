@@ -1,15 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: digital
- * Date: 12/02/2018
- * Time: 11:54
- */
 
 namespace AppBundle\ShowFinder;
 
+use AppBundle\ShowFinder\ShowFinderInterface;
 
-class DBShowFinder
+class DBShowFinder implements ShowFinderInterface
 {
+    public function findByName($query){
 
+    }
 }
