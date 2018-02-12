@@ -3,15 +3,19 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Show;
+use AppBundle\Entity\Category;
 use AppBundle\Type\ShowType;
 use AppBundle\Type\CategoryType;
-use AppBundle\Entity\Category;
+use AppBundle\File\FileUploader;
+use AppBundle\Search\ShowSearch;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use AppBundle\File\FileUploader;
-use AppBundle\Search\ShowSearch;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route(name="show_")
@@ -52,17 +56,26 @@ class ShowController extends Controller
     /**
      * @Route("/",name="list")
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
-
-        $em = $this->getDoctrine()->getManager();
-        $shows = $em->getRepository("AppBundle:Show")->findAll();
-        return $this->render(
-            'show/list.html.twig',
-            [
-                'shows' => $shows
-            ]
-        );
+        $showRepository = $this->getDoctrine()->getRepository('AppBundle:Show');
+        $session = $request->getSession();
+        if ($session->has('query_search_shows')){
+            $querySearchShows = $session->get('query_search_shows');
+            $shows = $showRepository->findAllByQuery($querySearchShows);
+            $request->getSession()->remove('query_search_shows');
+        }else {
+            $shows = $showRepository->findAll();
+            //$em = $this->getDoctrine()->getManager();
+            //$shows = $em->getRepository("AppBundle:Show")->findAll();
+            //return $this->render(
+            //    'show/list.html.twig',
+            //    [
+            //        'shows' => $shows
+            //    ]
+            //);
+        }
+        return $this->render('show/list.html.twig',['shows'=>$shows]);
     }
 
     public function categoriesAction(){
@@ -77,7 +90,7 @@ class ShowController extends Controller
     }
 
     /**
-     * @Route @Route("/update/{id}", name="update")
+     * @Route("/update/{id}", name="update")
      */
     public function updateAction(Show $show, Request $request, FileUploader $fileUploader){
         $showForm = $this->createForm(ShowType::class, $show, ['validation_groups'=>['update']]);
@@ -106,51 +119,43 @@ class ShowController extends Controller
 
     /**
      * @Route("/search", name="search")
+     * @Method({"POST"})
      */
     public function searchAction(Request $request)
     {
-        $name = $request->request->get('search');
-
-        $search = new ShowSearch();
-        $shows = $search->findWithName($name);
-
-        return $this->render(
-            'show/list.html.twig',
-            [
-                'shows' => $shows,
-                'search' => $name
-            ]
-        );
-
-        // $em = $this->getDoctrine()->getManager();
-        // $metadata = new ClassMetadata("Show");
-        // $entityRepository = new EntityRepository($em,$metadata);
-        // $queryBuilder = $entityRepository->createQueryBuilder('s');
-        // $shows = $queryBuilder->select(array('s'))
-        //     ->from('AppBundle:show','s')
-        //     ->where(" name like '%:name%'")
-        //     ->setParameter('name',$name)
-        //     ->getQuery()
-        //     ->getResult();
+        $request->getSession()->set('query_search_shows', $request->request->get('query'));
+        return $this->redirectToRoute('show_list');
+    }
 
 
-        // $conn = $this->getEntityManager()->getConnection();
-        // $sql = 'select * from s_show where name like "%'.$name.'%";';
-        // $stmt = $conn->prepare($sql);
-        // return $stmt->execute();
+    /**
+     * @Route("/delete",name="delete")
+     * @Method({"POST"})
+     */
+    public function delete_action(Request $request, CsrfTokenManagerInterface $csrfTokenManager){
+        $showId = $request->request->get('show_id');
 
-        //http://www.thisprogrammingthing.com/2017/Finding-Things-With-Symfony-3/
+        $show=$this->getDoctrine()->getRepository('AppBundle:Show')->findOneById($showId);
 
-        // $queryBuilder = $this->createQueryBuilder('s');
-        // $shows = $queryBuilder->select(array('s'))
-        //  ->from('AppBundle:show','s')
-        //     ->where(" name like '%:name%'")
-        //     ->setParameter('name',$name)
-        //     ->getQuery()
-        //     ->getResult();
-        // return $shows;
+        if(!$show){
+            throw new NotFoundHttpException(sprintf('There is no show with ID %d',$showId));
+        }
+
+        $csrfToken = new CsrfToken('delete_show',$request->get('_csrf_token'));
+
+        if ($csrfTokenManager->isTokenValid($csrfToken)){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($show);
+            $em->flush();
+
+            $this->addFlash("success","La série a bien été supprimée !");
+
+        }else{
+            $this->addFlash('danger',"Le token est invalide. La délétion n'a pas pu être effectuée.");
+        }
 
 
+        return $this->redirectToRoute('show_list');
     }
 
 }

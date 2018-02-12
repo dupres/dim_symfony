@@ -1,0 +1,65 @@
+git add .
+git commit -a -m "commit" (do not need commit message either)
+git push
+
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+
+php bin/console server:run
+pour lancer le server
+
+cd goto
+ls file content
+cat display file content
+
+bin/console debug:router
+pour voir le rooting du serveur
+
+bin/console debug:container
+pour voir les services de l'application
+
+bin/console assets:install
+pour voir les assets du bundle
+
+cat .gitignore
+pour voir les fichiers non pris en compte par git
+
+{{ parent() }} - des trucs
+
+
+{# #} Comments
+{{ }} Show sthing
+{% %} Do sthing
+
+bin/console config:dump-alias framework
+obtenir toutes les variables de configurations d'un bundle
+
+
+composer install
+
+bin/console doctrine:database:drop
+bin/console doctrine:database:create
+bin/console doctrine:schema:create
+bin/console doctrine:migration:migrate
+bin/console     // check si doctrine contient migration
+bin/console doctrine:migration:diff
+bin/console doctrine:migration:execute numDeLaMigrationDansLeFichierVersionProutDansDoctrineMigrations
+
+composer require doctrine/doctrine-migrations-bundle "^1.0"
+ou
+php composer.phar require doctrine/doctrine-migrations-bundle "^1.0"
+
+
+
+
+
+
+
+
+
+
+
+
+

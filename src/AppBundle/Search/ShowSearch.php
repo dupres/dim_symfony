@@ -5,37 +5,17 @@ namespace AppBundle\Search;
 use AppBundle\Entity\Show;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Tests\Fixtures\Entity;
 
-class ShowSearch
+class ShowSearch extends EntityRepository
 {
-
-
-    public function __construct(){}
-
-    /**
-     * @param $name
-     * @return Show[]
-     */
-    public function findWithName($name)
+    public function findAllByQuery($query)
     {
-    	$repository = $this->getDoctrine()->getRepository(Show::class);
-    	// return $repository->findBy(['name'=>$name]);
-
-
-    	// $conn = $this->getEntityManager()->getConnection();
-    	// $sql = 'select * from s_show where name like "%'.$name.'%";';
-    	// $stmt = $conn->prepare($sql);
-    	// return $stmt->execute();
-
-    	// http://www.thisprogrammingthing.com/2017/Finding-Things-With-Symfony-3/
-
-        $queryBuilder = $repository->createQueryBuilder('s');
-        $shows = $queryBuilder->select(array('s'))
-        	->from('AppBundle:Show','s')
-            ->where(" name like '%:name%'")
-            ->setParameter('name',$name)
+        return $this->createQueryBuilder('s')
+            ->where('LOWER(s.name) LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
             ->getQuery()
-            ->getResult();
-        return $shows;
+            ->getResult()
+            ;
     }
 }

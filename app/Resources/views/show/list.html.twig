@@ -1,5 +1,9 @@
 {% extends "show/base.html.twig" %}
 
+{% block pageHeading %}
+    Toutes les séries
+{% endblock %}
+
 {% block content %}
 
     <!-- Blog Post -->
@@ -10,13 +14,21 @@
         <div class="card-body">
             <a href="/update/{{ show.getId() }}" class="btn btn-primary" style="float:right;"><h2 class="card-title">{{ show.getName() }}</h2></a>
             <p class="card-text">{{ show.getAbstract() }}</p>
+
+            <form action="{{ path('show_delete') }}" method="POST">
+                <input type="hidden" name="show_id" value="{{ show.id }}"/>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_show') }}"/>
+                <input type="hidden" name="" value="_delete"/>
+
+                <button type="submit" class="btn btn-danger">Delete x</button>
+            </form>
+
         </div>
         <div class="card-footer text-muted">
             Créé par {{ show.getAuthor() }} le {{ show.getReleasedDate().format("d/m/Y") }}
             <a href="#">Start Bootstrap</a>
         </div>
     </div>
-    {% endfor %}
 
 
 
@@ -29,5 +41,8 @@
             <a class="page-link" href="#">Vieux &rarr;</a>
         </li>
     </ul>
+    {% else %}
+        Aucune série trouvée ! :/
+    {% endfor %}
 
 {% endblock %}

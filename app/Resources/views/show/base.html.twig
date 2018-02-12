@@ -51,14 +51,19 @@
             <div class="card my-4">
                 <h5 class="card-header">Chercher une série</h5>
                 <div class="card-body">
-                    <form action="/search" method="post">
+
+
+                    <form action="{{ path('show_search') }}" method="POST">
                         <div class="input-group">
-                            <input type="text" name="search" class="form-control" value="{{ search }}" placeholder="Rechercher...">
+                            <input type="text" id="category_name" name="query" class="form-control" value="{{ search }}" placeholder="Rechercher...">
                             <span class="input-group-btn">
                                 <input type="submit" class="btn btn-secondary" value="Go!">
                             </span>
                         </div>
                     </form>
+
+
+
                 </div>
             </div>
 
@@ -71,7 +76,7 @@
 </div>
 <!-- Bootstrap core JavaScript -->
 <!-- Footer -->
-<footer class="py-5 bg-dark"">
+<footer class="py-5 bg-dark">
     <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
     </div>
@@ -80,3 +85,58 @@
 <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 </html>
+
+<script
+        src="http://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+
+<script>
+
+    var r,g,b;
+    var ri,gi,bi;
+    r = 125;
+    g = 125;
+    b = 125;
+    ri = true;
+    gi = true;
+    bi = true;
+    setInterval(function(){
+        if (ri){
+            r++;
+            if (r>=255)
+                ri=false;
+        }else{
+            r--;
+            if(r<=125)
+                ri = true;
+        }
+    },50);
+    setInterval(function(){
+        if (gi){
+            g++;
+            if (g>=255)
+                gi=false;
+        }else{
+            g--;
+            if(g<=125)
+                gi = true;
+        }
+    },49);
+    setInterval(function(){
+        if (bi){
+            b++;
+            if (b>=255)
+                bi=false;
+        }else{
+            b--;
+            if(b<=125)
+                bi = true;
+        }
+    },48);
+    setInterval(function(){
+        $("body").css("background-color","rgb("+r+","+g+","+b+")");
+    },50);
+
+
+</script>
