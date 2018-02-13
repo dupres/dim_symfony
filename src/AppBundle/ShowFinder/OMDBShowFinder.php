@@ -14,9 +14,9 @@ class OMDBShowFinder implements ShowFinderInterface
     }
 
     public function findByName($query){
-        $results = $this->client->get('/?apikey=9bcaa22f&type=series&t="walking"');
+        $results = $this->client->get('/?apikey=9bcaa22f&type=series&t="'.$query.'"');
 
-        dump(\GuzzleHttp\json_decode($results->getBody(),true)); die();
+        return \GuzzleHttp\json_decode($results->getBody(),true);
     }
 
     public function getName(){

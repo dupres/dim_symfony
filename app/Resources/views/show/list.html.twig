@@ -26,7 +26,6 @@
         </div>
         <div class="card-footer text-muted">
             Créé par {{ show.getAuthor() }} le {{ show.getReleasedDate().format("d/m/Y") }}
-            <a href="#">Start Bootstrap</a>
         </div>
     </div>
 
@@ -42,7 +41,31 @@
         </li>
     </ul>
     {% else %}
-        Aucune série trouvée ! :/
+        {% if show_api is not null and show_api["Title"] is not null %}
+
+            <div class="card mb-4">
+
+                <h1>Résultat issu d'OMDB :</h1>
+                <img class="card-img-top" src="{{ show_api["Poster"] }}" alt="Card image cap">
+                <div class="card-body">
+                    <h2 class="card-title">{{ show_api["Title"] }}</h2>
+                    <p class="card-text plottotrad">{{ show_api["Plot"] }}</p>
+                </div>
+                <div class="card-footer text-muted">
+            {% if show_api["Writer"]!="N/A" or show_api["Released"]!="N/A" %}
+                Créé
+                {% if show_api["Writer"]!="N/A" %}
+                    par {{ show_api["Writer"] }}
+                {% endif %}
+                {% if show_api["Released"]!="N/A" %}
+                    le {{ show_api["Released"] }}
+                {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            Aucune série trouvée ! :/
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

@@ -63,10 +63,14 @@ class ShowController extends Controller
         $showRepository = $this->getDoctrine()->getRepository('AppBundle:Show');
         $session = $request->getSession();
         if ($session->has('query_search_shows')){
-            $shows = $showFinder->searchByName($session->get('query_search_shows'));
+            $res = $showFinder->searchByName($session->get('query_search_shows'));
+            $shows=$res["Local Database"];
+            $show_api = $res["IMDB API"];
             $session->remove('query_search_shows');
         }else{
-            $shows = $showRepository->findAll();
+            $em = $this->getDoctrine()->getManager();
+            $shows = $em->getRepository('AppBundle:Show')->findAll();
+            $show_api = null;
         }
 
 
@@ -88,7 +92,7 @@ class ShowController extends Controller
             //    ]
             //);
         }*/
-        return $this->render('show/list.html.twig',['shows'=>$shows]);
+        return $this->render('show/list.html.twig',['shows'=>$shows,"show_api"=>$show_api]);
     }
 
     public function categoriesAction(){
