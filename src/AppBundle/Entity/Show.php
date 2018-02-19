@@ -195,7 +195,7 @@ class Show{
     private $abstract;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="User"
      */
     private $country;
 

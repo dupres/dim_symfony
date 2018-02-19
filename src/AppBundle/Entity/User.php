@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+
 /**
  * @ORM\Entity
  * @ORM\Table
@@ -48,7 +49,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return ['ROLE_USER','ROLE_ADMIN'];
     }
 
     public function getPassword()
@@ -82,5 +83,22 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {}
+
+    /**
+     * @ORM\OneToMany(targetEntity="Show", mappedBy="author")
+     */
+    private $shows;
+
+    public function addShow(Show $show){
+        if (!($this->shows->contains($show)))
+            $this->shows->add($show);
+    }
+
+    public function removeShow(Show $show){
+        $this->shows->remove($show);
+    }
+
+
+
 
 }
