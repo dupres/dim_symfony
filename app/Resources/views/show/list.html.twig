@@ -9,10 +9,21 @@
     <!-- Blog Post -->
 
     {% for index, show in shows %}
+            {% if show.dataSource == constant('AppBundle\\Entity\\Show::DATA_SOURCE_DB') %}
+                {% set img = asset('upload/'~ show.mainPicture) %}
+            {%  else %}
+                {% set img = show.mainPicture %}
+            {% endif %}
     <div class="card mb-4">
-        <img class="card-img-top" src="/upload/{{ show.getMainPicture() }}" alt="Card image cap">
+        <img class="card-img-top" src="{{ img }}" alt="Card image cap">
         <div class="card-body">
-            <a href="/update/{{ show.getId() }}" class="btn btn-primary" style="float:right;"><h2 class="card-title">{{ show.getName() }}</h2></a>
+
+
+            {% if show.dataSource == constant('AppBundle\\Entity\\Show::DATA_SOURCE_DB') %}
+                <a href="/update/{{ show.getId() }}" class="btn btn-primary" style="float:right;"><h2 class="card-title">{{ show.getName() }}</h2></a>
+            {% else %}
+                <h2 class="card-title">{{ show.getName() }}</h2>
+            {% endif %}
             <p class="card-text">{{ show.getAbstract() }}</p>
 
             <form action="{{ path('show_delete') }}" method="POST">

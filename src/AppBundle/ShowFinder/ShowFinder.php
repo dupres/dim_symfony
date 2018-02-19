@@ -2,7 +2,7 @@
 
 namespace AppBundle\ShowFinder;
 
-
+use AppBundle\Entity\Show;
 
 class ShowFinder
 {
@@ -14,10 +14,12 @@ class ShowFinder
 
 
     public function searchByName($query){
-        foreach($this->finders as $finder){
-            $tmp[$finder->getName()] = $finder->findByName($query);
+        $results = [];
+
+        foreach($this->finders as $finder) {
+            $results = array_merge($results, $finder->findByName($query));
         }
 
-        return $tmp;
+        return $results;
     }
 }

@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Show{
 
+    const DATA_SOURCE_OMDB = "OMDB";
+    const DATA_SOURCE_DB = "In local database";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -26,6 +29,8 @@ class Show{
 
     public function setId($id){
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -43,6 +48,8 @@ class Show{
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -60,6 +67,8 @@ class Show{
     public function setAbstract($abstract)
     {
         $this->abstract = $abstract;
+
+        return $this;
     }
 
     /**
@@ -77,6 +86,8 @@ class Show{
     public function setCountry($country)
     {
         $this->country = $country;
+
+        return $this;
     }
 
     /**
@@ -94,6 +105,8 @@ class Show{
     public function setAuthor($author)
     {
         $this->author = $author;
+
+        return $this;
     }
 
     /**
@@ -111,6 +124,8 @@ class Show{
     public function setReleasedDate($releasedDate)
     {
         $this->releasedDate = $releasedDate;
+
+        return $this;
     }
 
     /**
@@ -137,6 +152,8 @@ class Show{
     public function setTmpPicture($tmpPicture)
     {
         $this->tmpPicture = $tmpPicture;
+
+        return $this;
     }
 
     /**
@@ -145,6 +162,8 @@ class Show{
     public function setMainPicture($mainPicture)
     {
         $this->mainPicture = $mainPicture;
+
+        return $this;
     }
 
     /**
@@ -161,6 +180,8 @@ class Show{
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
     }
 
     /**
@@ -202,4 +223,19 @@ class Show{
     private $category;
 
     private $tmpPicture;
+
+    /**
+     * @ORM\Column(options={"default":"In local database"})
+     */
+    private $dataSource;
+
+    public function getDataSource(){
+        return $this->dataSource;
+    }
+    public function setDataSource($dataSource){
+        $this->dataSource = $dataSource;
+        return $this;
+    }
+
+
 }

@@ -64,8 +64,8 @@ class ShowController extends Controller
         $session = $request->getSession();
         if ($session->has('query_search_shows')){
             $res = $showFinder->searchByName($session->get('query_search_shows'));
-            $shows=$res["Local Database"];
-            $show_api = $res["IMDB API"];
+            $shows=$res;
+
             $session->remove('query_search_shows');
         }else{
             $em = $this->getDoctrine()->getManager();
@@ -92,7 +92,7 @@ class ShowController extends Controller
             //    ]
             //);
         }*/
-        return $this->render('show/list.html.twig',['shows'=>$shows,"show_api"=>$show_api]);
+        return $this->render('show/list.html.twig',['shows'=>$shows]);
     }
 
     public function categoriesAction(){
@@ -120,7 +120,9 @@ class ShowController extends Controller
                 unlink($this->getParameter('kernel.project_dir').'/web'.$this->getParameter('upload_directory_file').'/'.$show->getMainPicture());
                 $generatedFileName = $fileUploader->upload($show->getTmpPicture(), $show->getCategory()->getName());
 
+
                 $show->setMainPicture($generatedFileName);
+                $show->setDataSource(Show::DATA_SOURCE_DB);
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($show);
