@@ -15,6 +15,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/create">Create</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('user_create') }}">Create user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('user_list') }}">Liste utilisateurs</a>
+                </li>
+                <li class="nav-item {% if app.request.attributes.get('_route')=='security_login' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a>
+                </li>
+                {% if app.request.attributes.get('_route')!='security_login' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="user/list">Connexion</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>

@@ -161,9 +161,11 @@ function Traduction(texteatraduire)
             }
         });
 	}
+    setTimeout(function(){
+        $(".card-text").each(function(key, value){
+            Traduction($(this));
+        });
 
-	$(".card-text").each(function(key, value){
-	    Traduction($(this));
-	});
+    },500);
 
 </script>

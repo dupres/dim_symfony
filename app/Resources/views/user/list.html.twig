@@ -1,0 +1,30 @@
+{% extends "show/base.html.twig" %}
+
+{% block pageHeading %}
+Liste des utilisateurs
+{% endblock %}
+
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Fullname</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr scope="row">
+                <td/>
+                <td>{{ user.getUsername() }}</td>
+                <td>{{ user.getEmail() }}</td>
+                <td>Role</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock content %}

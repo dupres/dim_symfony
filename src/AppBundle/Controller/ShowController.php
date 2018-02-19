@@ -177,4 +177,9 @@ class ShowController extends Controller
         return $this->redirectToRoute('show_list');
     }
 
+    /**
+     * @Route("/login",name="login")
+     * @Method({"POST"})
+     */
+
 }
