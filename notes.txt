@@ -85,3 +85,8 @@ TODO :
 
 USER.PHP
 SHOW.PHP
+
+
+
+
+composer require jms/serializer-bundle

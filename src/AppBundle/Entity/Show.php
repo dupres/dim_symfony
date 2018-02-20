@@ -5,10 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Entity\User;
+use JMS\Serializer\Annotation as JMS;
+
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Search\ShowSearch")
  * @ORM\Table(name="s_show")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class Show{
 
@@ -23,35 +27,59 @@ class Show{
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string",length=100)
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $abstract;
 
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
+     */
     private $country;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="shows")
      * @ORM\JoinColumn(name="show_id", referencedColumnName="id")
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $author;
 
     /**
      * @ORM\Column(type="date")
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $releasedDate;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\Image(minHeight=300, minWidth=750)
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $mainPicture;
 
@@ -59,6 +87,8 @@ class Show{
      * @ORM\ManyToOne(targetEntity="Category")
      * @ORM\JoinColumn(name="category_id",referencedColumnName="id")
      *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $category;
 
@@ -66,6 +96,9 @@ class Show{
 
     /**
      * @ORM\Column(options={"default":"In local database"})
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
      */
     private $dataSource;
 

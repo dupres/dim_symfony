@@ -6,11 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
  * @ORM\Table
  * @UniqueEntity("email")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -22,31 +25,44 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @JMS\Groups({"user"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string",length=255)
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"user","show"})
      */
     private $fullname;
 
     /**
      * @ORM\Column
+     *
+     * @JMS\Expose
      */
     private $password;
 
     /**
      * @ORM\Column
+     *
+     * @JMS\Groups({"user"})
      */
     private $email;
 
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="author")
+     *
+     * @JMS\Expose
      */
     private $shows;
 
     /**
      * @ORM\Column(type="json_array")
+     *
+     * @JMS\Expose
      */
     private $roles;
 

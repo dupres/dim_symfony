@@ -1,20 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dupres
- * Date: 05/02/2018
- * Time: 16:28
- */
 
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * Class Category
  * @ORM\Entity()
+ *
  * @UniqueEntity("name", message="{{ value }} is already used")
+ *
+ * @JMS\ExclusionPolicy("all");
  */
 class Category
 {
@@ -27,6 +24,8 @@ class Category
 
     /**
      * @ORM\Column(type="string",unique=true)
+     *
+     * @JMS\Expose
      */
     private $name;
 
@@ -45,9 +44,6 @@ class Category
     {
         $this->name = $name;
     }
-
-//    private $color;
-
 
 
 }

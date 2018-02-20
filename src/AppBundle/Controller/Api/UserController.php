@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\Category;
+use AppBundle\Entity\User;
 use JMS\Serializer\SerializationContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,31 +11,33 @@ use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route(name="api_category_")
+ * @Route(name="api_user_")
  */
-class CategoryController extends Controller
+class UserController extends Controller
 {
 
     /**
      * @Method({"GET"})
-     * @Route("/categories",name="list")
+     * @Route("/users",name="list")
      */
     public function listAction(SerializerInterface $serializer){
 
-        $categories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
 
-        $data = $serializer->serialize($categories,'json');
+        $serializationContext = new SerializationContext();
+
+        $data = $serializer->serialize($users,'json', $serializationContext->setGroups(['user']));
 
         return new Response($data, Response::HTTP_OK,['Content-Type'=>'application\json']);
     }
 
     /**
      * @Method({"GET"})
-     * @Route("/categories/{id}",name="get")
+     * @Route("/users/{id}",name="get")
      */
-    public function singleAction(Category $category, SerializerInterface $serializer){
+    public function singleAction(User $user, SerializerInterface $serializer){
 
-        $json = $serializer->serialize($category,'json');
+        $json = $serializer->serialize($user,'json');
 
         return new Response($json, Response::HTTP_OK,['Content-Type'=>'application\json']);
     }
