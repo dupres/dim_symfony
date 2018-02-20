@@ -30,7 +30,9 @@ security:
             pattern: ^/login$
             anonymous: ~
 
-
+        api:
+            pattern: ^/api
+            anonymous: ~
 
         secured_area:
             pattern: ^/
@@ -47,10 +49,6 @@ security:
         main:
             anonymous: ~
 
-    access-control:
-        -
-            path: ^/user
-            roles: ['ROLE_ADMIN']
 
 
             # activate different ways to authenticate

@@ -139,33 +139,27 @@
     },25);
 
 
-</script>
+    var navbaropen;
+    navbaropen = true;
+    setInterval(function(){
+        if (navbaropen){
+            $(".navbar").animate({
+                paddingTop:"+0vh"
+            },1000);
+            $("body").animate({
+                paddingTop:"+3vh"
+            },1000);
+            navbaropen = false;
+        }else{
+            $(".navbar").animate({
+                paddingTop:"+1vh"
+            },1000);
+            $("body").animate({
+                paddingTop:"+4.5vh"
+            },1000);
+            navbaropen = true;
+        }
+    },1000);
 
-
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-
-<script type="text/javascript">
-//Script adapted from http://codes-sources.commentcamarche.net/source/48546-api-google-traduction
-google.load("language", "1");
-
-function Traduction(texteatraduire)
-	{
-        var languetraduite = 'fr';
-        var languedorigine = 'en';
-
-        google.language.translate(texteatraduire, languedorigine, languetraduite,
-        function(result){
-            if (!result.error){
-                texteatraduire.append("\n\n"+result.translation);
-                console.log("yeah");
-            }
-        });
-	}
-    setTimeout(function(){
-        $(".card-text").each(function(key, value){
-            Traduction($(this));
-        });
-
-    },500);
 
 </script>

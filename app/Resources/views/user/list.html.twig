@@ -9,9 +9,10 @@ Liste des utilisateurs
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Fullname</th>
+            <th scope="col">Nom</th>
             <th scope="col">Email</th>
-            <th scope="col">Roles</th>
+            <th scope="col">Role</th>
+            <th scope="col">Séries liées</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +21,8 @@ Liste des utilisateurs
                 <td/>
                 <td>{{ user.getUsername() }}</td>
                 <td>{{ user.getEmail() }}</td>
-                <td>Role</td>
+                <td>{% for role in user.roles %}{{ role|slice(5,length) }}{% if not loop.last %},{% endif %}{% endfor %}</td>
+                <td>{% for show in user.shows %}{{ show.name }}{% if not loop.last %},{% endif %}{% else %}Pas de série associée !{% endfor %}</td>
             </tr>
         {% endfor %}
     </tbody>

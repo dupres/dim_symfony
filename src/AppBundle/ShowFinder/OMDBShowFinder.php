@@ -5,14 +5,20 @@ namespace AppBundle\ShowFinder;
 use AppBundle\Entity\Category;
 use GuzzleHttp\Client;
 use AppBundle\Entity\Show;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 class OMDBShowFinder implements ShowFinderInterface
 {
     private $client;
 
-    public function __construct(Client $client, $apiKey)
+    private $tokenStorage;
+
+    private $apiKey;
+
+    public function __construct(Client $client, TokenStorage $tokenStorage, $apiKey)
     {
+        $this->tokenStorage = $tokenStorage;
         $this->client = $client;
         $this->apiKey = $apiKey;
     }

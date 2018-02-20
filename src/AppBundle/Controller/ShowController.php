@@ -39,6 +39,9 @@ class ShowController extends Controller
 
             $show->setMainPicture($generatedFileName);
 
+            $show->setDataSource(Show::DATA_SOURCE_DB);
+            $show->setAuthor($this->getUser());
+
             //dump($show); die;
             $em = $this->getDoctrine()->getManager();
             $em->persist($show);
@@ -176,10 +179,5 @@ class ShowController extends Controller
 
         return $this->redirectToRoute('show_list');
     }
-
-    /**
-     * @Route("/login",name="login")
-     * @Method({"POST"})
-     */
 
 }

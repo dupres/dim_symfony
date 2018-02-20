@@ -20,7 +20,9 @@
 
 
             {% if show.dataSource == constant('AppBundle\\Entity\\Show::DATA_SOURCE_DB') %}
+                {% if is_granted('NOT USED',show) %}
                 <a href="/update/{{ show.getId() }}" class="btn btn-primary" style="float:right;"><h2 class="card-title">{{ show.getName() }}</h2></a>
+                {% endif %}
             {% else %}
                 <h2 class="card-title">{{ show.getName() }}</h2>
             {% endif %}
@@ -36,7 +38,7 @@
 
         </div>
         <div class="card-footer text-muted">
-            Créé par {{ show.getAuthor() }} le {{ show.getReleasedDate().format("d/m/Y") }}
+            Créé par {{ show.author.fullname }} le {{ show.getReleasedDate().format("d/m/Y") }}
         </div>
     </div>
 

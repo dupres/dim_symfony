@@ -18,6 +18,8 @@ class UserController extends Controller{
      */
     public function createAction(Request $request, EncoderFactoryInterface $encoderFactory){
 
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Accès refusé');
+
         $user = new User();
         $userForm = $this->createForm(UserType::class,$user);
 
@@ -46,6 +48,8 @@ class UserController extends Controller{
      * @Route("/list",name="list")
      */
     public function listAction(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Accès refusé');
+
         return $this->render('user/list.html.twig',['users'=>$this->getDoctrine()->getRepository('AppBundle:User')->findAll()]);
     }
 

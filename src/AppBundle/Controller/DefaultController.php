@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 /**
- * @Route("/api", schemes={"http", "https"})
+ * @Route("/apicaca", schemes={"http", "https"})
  * @Method({"GET"})
  */
 class DefaultController extends Controller
