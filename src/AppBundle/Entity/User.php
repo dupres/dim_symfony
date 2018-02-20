@@ -49,6 +49,7 @@ class User implements UserInterface
      * @ORM\Column
      *
      * @JMS\Groups({"user"})
+     * @JMS\Groups({"user_create"})
      */
     private $email;
 
@@ -63,6 +64,8 @@ class User implements UserInterface
      * @ORM\Column(type="json_array")
      *
      * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Groups({"user_create"})
      */
     private $roles;
 

@@ -82,11 +82,13 @@ bin/console security:encore-password password
 
 
 TODO :
-
-USER.PHP
-SHOW.PHP
+-Supprimer annotations phpStorm
+-Ordonner alphabétiquement use
+const > private > protected > public > constructors > funct > gets > sets (avec gets / sets dans l'ordre aplhabétique)
 
 
 
 
 composer require jms/serializer-bundle
+
+
