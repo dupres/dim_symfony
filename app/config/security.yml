@@ -11,7 +11,7 @@ security:
         in_memory:
             memory:
                 users:
-                    stephen:
+                    admin:
                         password: '$2y$13$H/roRLnUGwSaCnNBOpXOLOUJRf30lCM2.2l2E.czZh7mA9eWMKTaa' #password
                         roles: 'ROLE_USER'
         database:

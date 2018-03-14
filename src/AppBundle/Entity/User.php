@@ -2,11 +2,12 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -79,7 +80,17 @@ class User implements UserInterface
         $this->roles = new ArrayCollection();
     }
 
+    public function update(User $user){
+        $this->fullname = $user->fullname;
+        $this->password = $user->password;
+        $this->roles = $user->roles;
+    }
 
+
+    /**
+     * @return mixed
+     * @Assert\NotBlank(message="Please provide a name for the User.", groups={"create"})
+     */
     public function getFullname()
     {
         return $this->fullname;

@@ -2,10 +2,10 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -50,14 +50,6 @@ class Show{
     private $abstract;
 
     /**
-     * @ORM\Column(type="text")
-     *
-     * @JMS\Expose
-     * @JMS\Groups({"show"})
-     */
-    private $country;
-
-    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="shows")
      * @ORM\JoinColumn(name="show_id", referencedColumnName="id")
      *
@@ -67,12 +59,29 @@ class Show{
     private $author;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="category_id",referencedColumnName="id")
      *
      * @JMS\Expose
      * @JMS\Groups({"show"})
      */
-    private $releasedDate;
+    private $category;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
+     */
+    private $country;
+
+    /**
+     * @ORM\Column(options={"default":"In local database"})
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"show"})
+     */
+    private $dataSource;
 
     /**
      * @ORM\Column(type="string")
@@ -84,37 +93,33 @@ class Show{
     private $mainPicture;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category")
-     * @ORM\JoinColumn(name="category_id",referencedColumnName="id")
+     * @ORM\Column(type="date")
      *
      * @JMS\Expose
      * @JMS\Groups({"show"})
      */
-    private $category;
+    private $releasedDate;
 
     private $tmpPicture;
 
-    /**
-     * @ORM\Column(options={"default":"In local database"})
-     *
-     * @JMS\Expose
-     * @JMS\Groups({"show"})
-     */
-    private $dataSource;
-
 
     // --------------------------------
-    //        Fields
+    //        Properties
     //--------------------------------
 
-    public function getId(){
-        return $this->id;
+    public function update(Show $show){
+        $this->setName($show->getName());
+        $this->setAbstract($show->getAbstract());
+        $this->setAuthor($show->getAuthor());
+        $this->setCategory($show->getCategory());
+        $this->setCountry($show->getCountry());
+        $this->setMainPicture($show->getMainPicture());
+        $this->setReleasedDate($show->getReleasedDate());
     }
 
-    public function setId($id){
-        $this->id = $id;
-        return $this;
-    }
+    // --------------------------------
+    //        Getters
+    //--------------------------------
 
     /**
      * @return mixed
@@ -126,48 +131,12 @@ class Show{
     }
 
     /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
      * @return mixed
-     * @Assert\NotBlank(message="Please provide a name for the show.", groups={"create"})
+     * @Assert\NotBlank(message="Please provide an abstract for the show.", groups={"create"})
      */
     public function getAbstract()
     {
         return $this->abstract;
-    }
-
-    /**
-     * @param mixed $abstract
-     */
-    public function setAbstract($abstract)
-    {
-        $this->abstract = $abstract;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     * @Assert\NotBlank(groups={"create"})
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * @param mixed $country
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
-        return $this;
     }
 
     /**
@@ -180,30 +149,24 @@ class Show{
     }
 
     /**
-     * @param mixed $author
+     * @return mixed
      */
-    public function setAuthor(User $author)
+    public function getCategory()
     {
-        $this->author = $author;
-        return $this;
+        return $this->category;
     }
 
     /**
      * @return mixed
      * @Assert\NotBlank(groups={"create"})
      */
-    public function getReleasedDate()
+    public function getCountry()
     {
-        return $this->releasedDate;
+        return $this->country;
     }
 
-    /**
-     * @param mixed $releasedDate
-     */
-    public function setReleasedDate($releasedDate)
-    {
-        $this->releasedDate = $releasedDate;
-        return $this;
+    public function getDataSource(){
+        return $this->dataSource;
     }
 
     /**
@@ -219,21 +182,81 @@ class Show{
      * @return mixed
      * @Assert\NotBlank(groups={"create"})
      */
+    public function getReleasedDate()
+    {
+        return $this->releasedDate;
+    }
+
+    /**
+     * @return mixed
+     * @Assert\NotBlank(groups={"create"})
+     */
     public function getTmpPicture()
     {
         return $this->tmpPicture;
     }
 
+    // --------------------------------
+    //        Setters
+    //--------------------------------
+
     /**
-     * @param mixed $tmpPicture
+     * @return mixed
+     * @param mixed $name
      */
-    public function setTmpPicture($tmpPicture)
+    public function setName($name)
     {
-        $this->tmpPicture = $tmpPicture;
+        $this->name = $name;
         return $this;
     }
 
     /**
+     * @return mixed
+     * @param mixed $abstract
+     */
+    public function setAbstract($abstract)
+    {
+        $this->abstract = $abstract;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     * @param mixed $author
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     * @param mixed $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     * @param mixed $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    public function setDataSource($dataSource){
+        $this->dataSource = $dataSource;
+        return $this;
+    }
+
+    /**
+     * @return mixed
      * @param mixed $mainPicture
      */
     public function setMainPicture($mainPicture)
@@ -244,26 +267,20 @@ class Show{
 
     /**
      * @return mixed
+     * @param mixed $releasedDate
      */
-    public function getCategory()
+    public function setReleasedDate($releasedDate)
     {
-        return $this->category;
-    }
-
-    /**
-     * @param mixed $category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
+        $this->releasedDate = $releasedDate;
         return $this;
     }
-
-    public function getDataSource(){
-        return $this->dataSource;
-    }
-    public function setDataSource($dataSource){
-        $this->dataSource = $dataSource;
+    /**
+     * @return mixed
+     * @param mixed $tmpPicture
+     */
+    public function setTmpPicture($tmpPicture)
+    {
+        $this->tmpPicture = $tmpPicture;
         return $this;
     }
 

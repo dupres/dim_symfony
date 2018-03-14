@@ -3,10 +3,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\Category;
 
 /**
  * @ORM\Entity()
@@ -17,6 +16,10 @@ use AppBundle\Entity\Category;
  */
 class Category
 {
+    // --------------------------------
+    //        Fields
+    //--------------------------------
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -31,25 +34,22 @@ class Category
      */
     private $name;
 
-    /**
-     * @return string
-     */
+    // --------------------------------
+    //        Properties
+    //--------------------------------
+
+    public function update(Category $category){
+        $this->setName($category->getName());
+    }
+
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    public function update($category){
-        //TODO
-        //$this->
     }
 
 

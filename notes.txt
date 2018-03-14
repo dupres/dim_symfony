@@ -86,7 +86,7 @@ TODO :
 -Ordonner alphabétiquement use
 const > private > protected > public > constructors > funct > gets > sets (avec gets / sets dans l'ordre aplhabétique)
 
-
+c
 
 
 composer require jms/serializer-bundle

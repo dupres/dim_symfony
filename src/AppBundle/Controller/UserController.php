@@ -2,12 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
+use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\User;
 use AppBundle\Type\UserType;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/user",name="user_")
@@ -15,6 +19,9 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class UserController extends Controller{
     /**
      * @Route("/create", name="create")
+     * @param Request $request
+     * @param EncoderFactoryInterface $encoderFactory
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request, EncoderFactoryInterface $encoderFactory){
 
@@ -43,6 +50,10 @@ class UserController extends Controller{
 
         return $this->render("user/create.html.twig",['userForm'=>$userForm->createView()]);
     }
+
+
+
+
 
     /**
      * @Route("/list",name="list")
