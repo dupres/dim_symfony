@@ -19,8 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @Route(name="api_category_")
  */
-class CategoryController extends Controller
-{
+class CategoryController extends Controller{
 
     /**
      * @Method({"GET"})
@@ -62,6 +61,44 @@ class CategoryController extends Controller
             return new Response($json, Response::HTTP_OK, ['Content-Type' => 'application\json']);
         } else
             return new Response("Catégorie inconnue", Response::HTTP_NOT_FOUND, ['Content-Type' => 'application\json']);
+    }
+
+    /**
+     * @Method({"PUT"})
+     * @Route("/category/create",name="create")
+     * @param Request $request
+     * @param EncoderFactoryInterface $encoderFactory
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @return String
+     *
+     * @SWG\Parameter(name="Category",in="body",description="Category to create",
+     *     @SWG\Schema(type="array",@Model(type=AppBundle\Entity\Category::class)))
+     * @SWG\Response(response=200,description="Category created")
+     * @SWG\Response(response=400,description="Error, category not created")
+     * @SWG\Tag(name="Categories")
+     */
+    public function createAction(Request $request, EncoderFactoryInterface $encoderFactory, SerializerInterface $serializer, ValidatorInterface $validator){
+        $serializationContext = DeserializationContext::create();
+        $category = $serializer->deserialize($request->getContent(),Category::class,'json',$serializationContext->setGroups(['category_create','category']));
+
+        $constraintValidationList = $validator->validate($category);
+
+        if ($constraintValidationList->count()==0){
+
+            $encoder = $encoderFactory->getEncoder($category);
+            $category->setPassword($encoder->encodePassword($category->getPassword(),null));
+
+            $category->setRoles(explode(',',$category->getRoles()));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            return new Response("L'utilisateur a bien été créé !", Response::HTTP_CREATED, ['Content-Type' => 'application\json']);
+        }
+
+        return new Response("Une erreur est survenue, l'utilisateur n'a pas été créé.", Response::HTTP_BAD_REQUEST, ['Content-Type' => 'application\json']);
     }
 
     /**
