@@ -3,10 +3,11 @@
 namespace AppBundle\Serializer\Listener;
 
 use AppBundle\Entity\Show;
-use JMS\Serializer\EventDispatcher\Events;
-use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
-use JMS\Serializer\EventDispatcher\ObjectEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use JMS\Serializer\EventDispatcher\Events;
+use JMS\Serializer\EventDispatcher\ObjectEvent;
+use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
+use JMS\Serializer\EventDispatcher\PreDeserializeEvent;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class ShowListener implements EventSubscriberInterface

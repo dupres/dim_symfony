@@ -5,8 +5,9 @@ namespace AppBundle\Listener;
 
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 class ApiExceptionListener implements EventSubscriberInterface
 {
@@ -15,7 +16,7 @@ class ApiExceptionListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(){
         return [
-            KernelEvents::EXCEPTION => ['processExceptionForApi',0]
+            KernelEvents::EXCEPTION => ['processExceptionForApi',1]
         ];
     }
 
